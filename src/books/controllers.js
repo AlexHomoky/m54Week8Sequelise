@@ -26,7 +26,11 @@ const deleteBook = async (req, res) => {
   try {
     const book = await Book.destroy({
       where: {
-        title: req.body.title,
+        [Op.or]: [
+          { title: req.body.title },
+          { author: req.body.author },
+          { genre: req.body.genre },
+        ],
       },
     });
     res.status(201).json({ message: "book deleted", book: book });
